@@ -40,7 +40,7 @@ int main(void) {
 
     P1REN |= BIT1 | BIT2; // enable p1.1 and p1.2 resistors
 
-    P1IES |= BIT1 | BIT2; // rising_edge interrupt signal
+    P1IES |= BIT1 | BIT2; // falling_edge interrupt signal
     P1IE  |= BIT1 | BIT2; // enable p1.1 and p1.2 interrupt
     P1IFG &= ~(BIT1 | BIT2); // clear p1.1 and p1.2 interrupt flags
     _BIS_SR(GIE); // enable global interrupt
