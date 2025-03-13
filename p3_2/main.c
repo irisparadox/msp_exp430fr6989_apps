@@ -17,8 +17,6 @@ struct mbox {
     volatile unsigned char clear_flag;
 } counter_mbox;
 
-volatile unsigned char led_counter = 0;
-
 int main(void) {
     // Stop watchdog timer
     WDT_A_hold(WDT_A_BASE);
@@ -89,20 +87,10 @@ __interrupt void TIMER0_A0_ISR(void) {
 
 #pragma vector=TIMER1_A0_VECTOR
 __interrupt void TIMER1_A0_ISR(void) {
-    switch(led_counter) {
-        case 0:
-            P1OUT |= BIT0;
-            ++led_counter;
-            break;
-        case 1:
-        case 2:
-            P1OUT &= ~(BIT0);
-            ++led_counter;
-            break;
-        case 3:
-            led_counter = 0;
-            break;
-    }
+    if(!(counter_mbox.count % 4))
+        P1OUT |= BIT0;
+    else
+        P1OUT &= ~(BIT0);
 }
 
 void lcd_display_int(unsigned int n) {
